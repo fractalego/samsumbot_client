@@ -33,7 +33,7 @@ export default {
       banner: {
         header: "AlbertoBot v0.0.1",
         subHeader: "",
-        helpHeader: "Hello! What is your name?",
+        helpHeader: "> Hello! What is your name?",
         emoji: {first: ""},
         sign: "> ",
       },
