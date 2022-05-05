@@ -26,12 +26,12 @@ def get_triplets():
     if request.method != "POST":
         return []
     data = json.loads(request.data)
-    dialogue_lines = data["dialogue"]
-    query = data["query"]
+    user_lines = data["user_lines"]
+    bot_lines = data["bot_lines"]
+    query = user_lines[-1]
     prologue = data["prologue"]
     summary = get_relevant_summary(query, prologue)
-    dialogue = "\n".join(dialogue_lines[-5:])
-    return jsonify({"reply": generate_reply(summary, dialogue, query)})
+    return jsonify({"reply": generate_reply(summary, bot_lines, user_lines)})
 
 
 if __name__ == "__main__":

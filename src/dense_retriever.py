@@ -14,7 +14,7 @@ class DenseRetriever:
     _threshold_length = 5
 
     def __init__(self, model_name):
-        self._sentence_model = SentenceTransformer(model_name)
+        self._sentence_model = SentenceTransformer(model_name, device="cpu")
 
         self._embeddings_model = KeyedVectors(768)
 

@@ -1,11 +1,11 @@
 <template>
   <div>
     <b-shell
-      :banner="banner"
-      :shell_input="send_to_terminal"
-      :style="style"
-      @shell_output="prompt"
-      autofocus
+        :banner="banner"
+        :shell_input="send_to_terminal"
+        :style="style"
+        @shell_output="prompt"
+        autofocus
     ></b-shell>
   </div>
 </template>
@@ -33,13 +33,32 @@ export default {
         emoji: {first: ""},
         sign: "> ",
       },
+      prologue: "",
+      bot_lines: ["Hello! What is your name"]
     };
   },
   methods: {
-    prompt(value) {
-      if (value != "") {
-        this.send_to_terminal = "HELLO ALBERTO!\n";
+    prompt(query) {
+      if (this.$children[0].history_.length == 1) {
+        this.prologue = `When the user is asked their name, they reply: '${query}'.`;
       }
+      var data = {
+        bot_lines: this.bot_lines,
+        user_lines: this.$children[0].history_,
+        prologue: this.prologue,
+        query: query,
+      }
+      axios.post("api/query", data)
+          .then((response) => {
+            console.log(response);
+            var reply = response["data"]["reply"]
+            this.send_to_terminal = reply;
+            this.bot_lines.push(reply);
+          })
+          .catch((error) => {
+            console.log(error);
+            this.send_to_terminal = "Connection error. Please check the logs.";
+          });
     }
   }
 };
