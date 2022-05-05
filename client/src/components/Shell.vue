@@ -37,19 +37,21 @@ export default {
         emoji: {first: ""},
         sign: "> ",
       },
-
       prologue: "",
-      bot_lines: ["Hello! What is your name?"]
+      bot_lines: ["Hello! What is your name?"],
+      user_lines: []
     };
   },
   methods: {
     prompt(query) {
       if (this.$children[0].history_.length == 1) {
+        query = utils.capitalizeFirstLetter(query);
         this.prologue = `When the user is asked their name, they reply: '${query}'.`;
       }
+      this.user_lines.push(query)
       var data = {
         bot_lines: this.bot_lines,
-        user_lines: this.$children[0].history_,
+        user_lines: this.user_lines,
         prologue: this.prologue,
         query: query,
       }
