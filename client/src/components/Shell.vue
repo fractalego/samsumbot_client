@@ -13,7 +13,9 @@
 <script>
 import axios from "axios";
 import Vue from "vue";
-import shell from './bot-shell.vue'
+import shell from "./bot-shell.vue"
+
+const utils = require("./utils.js")
 
 Vue.component("b-shell", shell);
 Vue.use(shell);
@@ -26,6 +28,8 @@ export default {
         width: "800px"
       },
       send_to_terminal: "",
+      wating_prompt: "typing...",
+      user_prompt: "> ",
       banner: {
         header: "AlbertoBot v0.0.1",
         subHeader: "",
@@ -33,8 +37,9 @@ export default {
         emoji: {first: ""},
         sign: "> ",
       },
+
       prologue: "",
-      bot_lines: ["Hello! What is your name"]
+      bot_lines: ["Hello! What is your name?"]
     };
   },
   methods: {
@@ -48,15 +53,18 @@ export default {
         prologue: this.prologue,
         query: query,
       }
+      this.banner.sign = this.wating_prompt;
       axios.post("api/query", data)
           .then((response) => {
             console.log(response);
             var reply = response["data"]["reply"]
             this.send_to_terminal = reply;
             this.bot_lines.push(reply);
+            this.banner.sign = this.user_prompt;
           })
           .catch((error) => {
             console.log(error);
+            this.banner.sign = this.user_prompt;
             this.send_to_terminal = "Connection error. Please check the logs.";
           });
     }

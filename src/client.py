@@ -9,6 +9,7 @@ from typing import List
 from src.dense_retriever import DenseRetriever
 from src.utils import create_text_from_summary_and_dialogue
 
+_terminal_characters = ["\n", "User:"]
 _path = os.path.dirname(__file__)
 _config = yaml.safe_load(open(os.path.join(_path, "../config.yaml")))
 _server_url = f"https://{_config['connection']['host']}:{_config['connection']['port']}/predictions/bot"
@@ -22,15 +23,16 @@ _chatbot_name = _knowledge["chatbot"]["name"]
 
 
 def predict_answer(prompt: str) -> str:
+    # payload = {"data": prompt, "num_beams": 3}
     payload = {"data": prompt}
     r = requests.post(_server_url, json=payload, verify=False)
     answer = json.loads(r.content.decode("utf-8"))
     return _tokenizer.decode(answer)
 
 
-def create_dialogue_from_bot_and_user_lines(bot_lines, user_lines):
+def create_dialogue_from_bot_and_user_lines(bot_lines, user_lines, max_history=-3):
     dialogue = ""
-    for bot_line, user_line in zip(bot_lines, user_lines):
+    for bot_line, user_line in zip(bot_lines[max_history:], user_lines[max_history:]):
         dialogue += f"{_chatbot_name}: {bot_line}\n"
         dialogue += f"User: {user_line}\n"
 
@@ -45,14 +47,12 @@ def generate_reply(summary: str, bot_lines: List[str], user_lines: List[str]) ->
     print(create_text_from_summary_and_dialogue(summary, dialogue + answer))
     print()
 
-    terminal_characters = [".", "!", "?", "\n"]
-
-    while all(item not in answer for item in terminal_characters):
+    while all(item not in answer for item in _terminal_characters):
         text = create_text_from_summary_and_dialogue(summary, dialogue + answer)
         answer += predict_answer(text)[len(text) :]
 
     end = min(
-        [answer.find(item) for item in terminal_characters if answer.find(item) > 0]
+        [answer.find(item) for item in _terminal_characters if answer.find(item) > 0]
     )
     answer = answer[:end].strip()
 
@@ -61,9 +61,8 @@ def generate_reply(summary: str, bot_lines: List[str], user_lines: List[str]) ->
 
 def get_relevant_summary(query: str, prologue: str = "") -> str:
     summary = "\n".join(_knowledge["permanent"]) + "\n"
-    summary += f"The chatbot name is {_chatbot_name}.\n"
     summary += prologue + "\n"
-    best_indices = _retriever.get_indices_and_scores_from_text(query)
+    best_indices = _retriever.get_indices_and_scores_from_text(query, topn=3)
     for index, _ in best_indices:
         summary += _knowledge["items"][int(index)] + "\n"
 

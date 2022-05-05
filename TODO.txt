@@ -1,0 +1,4 @@
+- Implement memory for last query:
+    - last query's retrieval must stay in memory
+- Client must get the some knowledge (name, first question) from server
+- Implement threshold for retrieval. If there is nothing relevant, use default knowledge.

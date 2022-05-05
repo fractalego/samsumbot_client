@@ -23,12 +23,11 @@ class DenseRetriever:
         self._embeddings_model.add_vectors([index], [embeddings])
         self._embeddings_model.fill_norms(force=True)
 
-    def get_indices_and_scores_from_text(self, text: str) -> List[Tuple[str, float]]:
-        if not text or len(text) < self._threshold_length:
-            return []
-
+    def get_indices_and_scores_from_text(
+        self, text: str, topn: int = 5
+    ) -> List[Tuple[str, float]]:
         embeddings = self._get_embeddings_from_text(text)
-        return self._embeddings_model.similar_by_vector(embeddings, topn=2)
+        return self._embeddings_model.similar_by_vector(embeddings, topn=topn)
 
     def _get_embeddings_from_text(self, text: str) -> "numpy.array":
         return self._sentence_model.encode(text)

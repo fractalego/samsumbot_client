@@ -21,7 +21,7 @@
         <div class="prompt">
           <div v-if="banner.emoji.first && showemoji">({{banner.emoji.first}})</div>
           <div v-if="banner.emoji.second && !showemoji">({{banner.emoji.second}})</div>
-          <div>{{banner.sign ? banner.sign : '>>'}}</div>
+          <div>{{banner.sign ? banner.sign : '>'}}</div>
         </div>
 
         <input
