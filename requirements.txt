@@ -1,2 +1,6 @@
 flask
 flask_cors
+pyyaml
+numpy
+gensim
+sentence_transformers

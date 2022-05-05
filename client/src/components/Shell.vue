@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import Vue from "vue";
 import shell from './bot-shell.vue'
 
@@ -28,7 +29,7 @@ export default {
       banner: {
         header: "AlbertoBot v0.0.1",
         subHeader: "",
-        helpHeader: "> Hello! What is your name?",
+        helpHeader: "Hello! What is your name?",
         emoji: {first: ""},
         sign: "> ",
       },
@@ -37,7 +38,7 @@ export default {
   methods: {
     prompt(value) {
       if (value != "") {
-        this.send_to_terminal = "> HELLO ALBERTO!\n";
+        this.send_to_terminal = "HELLO ALBERTO!\n";
       }
     }
   }
