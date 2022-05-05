@@ -60,7 +60,7 @@ export default {
           .then((response) => {
             console.log(response);
             var reply = response["data"]["reply"]
-            this.send_to_terminal = reply;
+            this.send_to_terminal = "> " + reply;
             this.bot_lines.push(reply);
             this.banner.sign = this.user_prompt;
           })

@@ -1,4 +1,5 @@
 - Implement memory for last query:
     - last query's retrieval must stay in memory
+- if the bot answer a different question in the same way => reset dialogue and query again.
 - Client must get the some knowledge (name, first question) from server
 - Implement threshold for retrieval. If there is nothing relevant, use default knowledge.

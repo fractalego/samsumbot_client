@@ -23,8 +23,7 @@ _chatbot_name = _knowledge["chatbot"]["name"]
 
 
 def predict_answer(prompt: str) -> str:
-    # payload = {"data": prompt, "num_beams": 3}
-    payload = {"data": prompt}
+    payload = {"data": prompt, "num_beams": 1}
     r = requests.post(_server_url, json=payload, verify=False)
     answer = json.loads(r.content.decode("utf-8"))
     return _tokenizer.decode(answer)
