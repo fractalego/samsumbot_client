@@ -68,9 +68,18 @@ def query_refers_to_prior_dialogue(text):
     text = re.sub("^Are", "are", text)
     text = re.sub("^Am", "am", text)
 
+    if "which one" in text.lower():
+        return True
+
     word_and_pos_list = pos_tag(word_tokenize(text))
     for item in word_and_pos_list:
+        if item[0].lower() in ["yours", "mine", "its", "hers", "his", "theirs"]:
+            return True
+
         if item[1] in ["PRP", "PRP$"] and item[0].lower() not in ["you", "your"]:
+            return True
+
+        if item[1] in ["RB"] and item[0].lower() in ["there"]:
             return True
 
     for item in word_and_pos_list:

@@ -221,7 +221,7 @@ img {
   outline: none;
   background-color: transparent;
   margin: 0;
-  width: 100%;
+  width: 800px;
   font: inherit;
   border: none;
   color: inherit;
