@@ -1,5 +1,14 @@
+TODO:
+- Client must get the some knowledge (name, first question) from server
+
+
+DONE:
+- Implement threshold for retrieval. If there is nothing relevant, use default knowledge.
+- create list of profanity words and stop conversation when one of these words appears.
+    - actually use https://huggingface.co/unitary/toxic-bert
+- Words like good, great trigger I don't know.
+- if the bot answer a different question in the same way => reset dialogue and query again.
 - Implement memory for last query:
     - last query's retrieval must stay in memory
-- if the bot answer a different question in the same way => reset dialogue and query again.
-- Client must get the some knowledge (name, first question) from server
-- Implement threshold for retrieval. If there is nothing relevant, use default knowledge.
+    - At least query for bot_lines[-2] as well
+        - This last query should be contingent on whether there are pronouns. Or if it is a lone "WRB".

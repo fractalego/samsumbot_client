@@ -28,9 +28,8 @@ def get_triplets():
     data = json.loads(request.data)
     user_lines = data["user_lines"]
     bot_lines = data["bot_lines"]
-    query = user_lines[-1]
     prologue = data["prologue"]
-    summary = get_relevant_summary(query, prologue)
+    summary = get_relevant_summary(user_lines, prologue)
     return jsonify({"reply": generate_reply(summary, bot_lines, user_lines)})
 
 

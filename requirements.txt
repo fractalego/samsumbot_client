@@ -4,3 +4,4 @@ pyyaml
 numpy
 gensim
 sentence_transformers
+detoxify
