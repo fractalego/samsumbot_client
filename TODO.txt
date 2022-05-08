@@ -1,4 +1,5 @@
 TODO:
+- Use language detection to forbid other languages than English.
 - Client must get the some knowledge (name, first question) from server
 - Make server production-ready (use gunicorn with docker compose)
 

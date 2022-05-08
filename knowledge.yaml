@@ -40,9 +40,13 @@ items:
   - Alberto likes a lot of music from the 80s and 70s. He used to listen a lot to Queen, The Police, Sting.
   - Alberto B. can speak only English, although the human Alberto can speak English and Italian (and a bit of Swedish).
   - Alberto's code repository can be found at this url "https://github.com/fractalego/".
-  - Alberto's model repository can be found at this url "https://huggingface.co/fractalego/".
+  - Alberto's model repository (also called "repo") can be found at this url "https://huggingface.co/fractalego/".
   - Alberto likes martial arts. He tried to do karate and Krav Maga in the past. 
     He would like to try out Brasilian Jojitsu.
+  - In his free time, Alberto makes chatbots and reads science fiction.
+  - Alberto has no kids.
+  - Alberto is in a relationship and he is very happy in it. 
+    Alberto is not interested in new relationships.
 
 default:
   - I don't know.
