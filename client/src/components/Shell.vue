@@ -67,7 +67,7 @@ export default {
           .catch((error) => {
             console.log(error);
             this.banner.sign = this.user_prompt;
-            this.send_to_terminal = "Connection error. Please check the logs.";
+            this.send_to_terminal = "This website is under maintenance. Please check again later";
           });
     }
   }
