@@ -80,9 +80,7 @@ def generate_reply(summary: str, bot_lines: List[str], user_lines: List[str]) ->
 
         return answer
 
-    dialogue = create_dialogue_from_bot_and_user_lines(
-        bot_lines, user_lines, max_history=1
-    )
+    dialogue = f"User: {user_lines[-1]}\n"
     print("New dialogue:")
     print(dialogue)
     dialogue += f"{_chatbot_name}: "
@@ -95,7 +93,7 @@ def generate_reply(summary: str, bot_lines: List[str], user_lines: List[str]) ->
 
 
 def get_relevant_summary(
-    user_lines: str, prologue: str = "", retrieval_threshold=0.15
+    user_lines: str, prologue: str = "", retrieval_threshold=0.134
 ) -> str:
     query = user_lines[-1]
     summary = "\n".join(_knowledge["permanent"]) + "\n"
