@@ -1,7 +1,9 @@
 TODO:
-- Use language detection to forbid other languages than English.
-- Client must get the some knowledge (name, first question) from server
 - Make server production-ready (use gunicorn with docker compose)
+- do retrieval for the last three lines
+- Client must get the some knowledge (name, first question) from server
+
+
 
 DONE:
 - Implement threshold for retrieval. If there is nothing relevant, use default knowledge.
@@ -13,3 +15,4 @@ DONE:
     - last query's retrieval must stay in memory
     - At least query for bot_lines[-2] as well
         - This last query should be contingent on whether there are pronouns. Or if it is a lone "WRB".
+- Use language detection to forbid other languages than English.
