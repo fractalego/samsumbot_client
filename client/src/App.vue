@@ -11,6 +11,9 @@ export default {
   name: 'App',
   components: {
     Shell
+  },
+  created() {
+    document.title = "AlbertoBot";
   }
 }
 </script>
