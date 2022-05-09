@@ -60,3 +60,6 @@ default:
 
 profanity:
   - I cannot reply to that.
+
+non-english:
+  - I am only allowed to speak english.

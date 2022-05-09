@@ -7,6 +7,7 @@ import yaml
 
 from typing import List
 from src.dense_retriever import DenseRetriever
+from src.language_detector import LanguageDetector
 from src.toxicity_detector import ToxicityDetector
 from src.utils import (
     create_text_from_summary_and_dialogue,
@@ -21,6 +22,7 @@ _server_url = f"https://{_config['connection']['host']}:{_config['connection']['
 _tokenizer = transformers.AutoTokenizer.from_pretrained("EleutherAI/gpt-j-6B")
 _retriever = DenseRetriever("msmarco-distilbert-base-v3")
 _toxic_detector = ToxicityDetector("original")
+_language_detector = LanguageDetector()
 
 _knowledge = yaml.safe_load(open(os.path.join(_path, "../knowledge.yaml")))
 for index, sentence in enumerate(_knowledge["permanent"]):
@@ -51,7 +53,7 @@ def get_reply_from_connection(summary: str, dialogue: str):
     answer = ""
     while all(item not in answer for item in _terminal_characters):
         text = create_text_from_summary_and_dialogue(summary, dialogue + answer)
-        answer += predict_answer(text)[len(text) :]
+        answer += predict_answer(text)[len(text):]
 
     end = min(
         [answer.find(item) for item in _terminal_characters if answer.find(item) > 0]
@@ -63,6 +65,9 @@ def get_reply_from_connection(summary: str, dialogue: str):
 def generate_reply(summary: str, bot_lines: List[str], user_lines: List[str]) -> str:
     if _toxic_detector.is_toxic(user_lines[-1]):
         return _knowledge["profanity"][0]
+
+    if not _language_detector.is_english(user_lines[-1]):
+        return _knowledge["non-english"][0]
 
     dialogue = create_dialogue_from_bot_and_user_lines(bot_lines, user_lines)
     dialogue += f"{_chatbot_name}: "
@@ -93,7 +98,7 @@ def generate_reply(summary: str, bot_lines: List[str], user_lines: List[str]) ->
 
 
 def get_relevant_summary(
-    user_lines: str, prologue: str = "", retrieval_threshold=0.134
+        user_lines: str, prologue: str = "", retrieval_threshold=0.134
 ) -> str:
     query = user_lines[-1]
     summary = "\n".join(_knowledge["permanent"]) + "\n"
@@ -102,9 +107,9 @@ def get_relevant_summary(
     print(best_indices)
 
     if (
-        is_question(query)
-        and all(item[1] < retrieval_threshold for item in best_indices)
-        and not query_refers_to_prior_dialogue(query)
+            is_question(query)
+            and all(item[1] < retrieval_threshold for item in best_indices)
+            and not query_refers_to_prior_dialogue(query)
     ):
         summary += (
             f"When asked '{query}', the user replies '{_knowledge['default'][0]}'.\n"
