@@ -32,7 +32,7 @@ export default {
       user_prompt: "> ",
       banner: {
         header: "AlbertoBot v0.0.1",
-        subHeader: "",
+        subHeader: "This bot tells you information about me.",
         helpHeader: "> Hello! What is your name?",
         emoji: {first: ""},
         sign: "> ",
