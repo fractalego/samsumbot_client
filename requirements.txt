@@ -6,3 +6,4 @@ gensim
 sentence_transformers
 detoxify
 pycld2
+gunicorn

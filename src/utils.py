@@ -1,10 +1,7 @@
-import nltk
 import re
 
 from nltk import pos_tag
 from nltk import word_tokenize
-
-nltk.download("punkt")
 
 
 def create_text_from_summary_and_dialogue(summary, dialogue):
