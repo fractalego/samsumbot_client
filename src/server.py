@@ -3,7 +3,9 @@ import json
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
 
-from src.client import get_relevant_summary, generate_reply
+from src.connector import Connector
+
+_connector = Connector()
 
 DEBUG = True
 app = Flask(
@@ -29,8 +31,9 @@ def get_triplets():
     user_lines = data["user_lines"]
     bot_lines = data["bot_lines"]
     prologue = data["prologue"]
-    summary = get_relevant_summary(user_lines, prologue)
-    return jsonify({"reply": generate_reply(summary, bot_lines, user_lines)})
+    return jsonify(
+        {"reply": _connector.generate_reply(prologue, bot_lines, user_lines)}
+    )
 
 
 if __name__ == "__main__":
