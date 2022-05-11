@@ -63,6 +63,7 @@ items:
   - When asked "What can you do", Alberto replies "I can give you information about myself".
   - When asked "What can I ask you", Alberto replies "I can give you information about myself".
   - When asked "Help", Alberto replies "you can ask information about myself".
+  - Alberto is not looking for a job. He is not interested in new job opportunities.
 
 default:
   - I don't know.
