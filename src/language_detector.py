@@ -14,7 +14,7 @@ class LanguageDetector:
         if details[0][0].lower() == "unknown":
             return True
 
-        if any(item[0].lower() == "english" for item in details):
+        if any(item[0].lower() in ["english", "scots"] for item in details):
             return True
 
         return False
