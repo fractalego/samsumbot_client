@@ -76,6 +76,9 @@ class Connector:
         self, prologue, bot_lines: List[str], user_lines: List[str]
     ) -> str:
         summary = self.get_relevant_summary(user_lines, prologue)
+
+        print(summary)
+
         if self._toxic_detector.is_toxic(user_lines[-1]):
             return self._knowledge["profanity"][0]
 
@@ -101,13 +104,13 @@ class Connector:
         return answer
 
     def get_relevant_summary(
-        self, user_lines: List[str], prologue: str = "", retrieval_threshold=0.134
+        self, user_lines: List[str], prologue: str = "", retrieval_threshold=0.128
     ) -> str:
         query = user_lines[-1]
         summary = "\n".join(self._knowledge["permanent"]) + "\n"
         summary += prologue + "\n"
         best_indices = self._retriever.get_indices_and_scores_from_text(query, topn=3)
-
+        print(best_indices)
         if (
             is_question(query)
             and all(item[1] < retrieval_threshold for item in best_indices)
@@ -122,7 +125,6 @@ class Connector:
                 continue
 
             if "PERM_" in index:
-                summary += f"{self._chatbot_name} wants to move the conversation to a different topic.\n"
                 continue
 
             index = int(index.replace("ITEM_", ""))
@@ -144,6 +146,9 @@ class Connector:
 
         for index in index_list:
             summary += self._knowledge["items"][index] + "\n"
+
+        if not index_list:
+            summary += f"{self._chatbot_name} wants to move the conversation to a different topic.\n"
 
         summary = summary.replace(".\n", ". ")
         summary = summary.replace("\n", ". ")
