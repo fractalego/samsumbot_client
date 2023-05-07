@@ -24,7 +24,7 @@ class Connector:
     _path = os.path.dirname(__file__)
     _config = yaml.safe_load(open(os.path.join(_path, "../config.yaml")))
     _server_url = f"https://{_config['connection']['host']}:{_config['connection']['port']}/predictions/bot"
-    _tokenizer = transformers.AutoTokenizer.from_pretrained("EleutherAI/gpt-j-6B")
+    _tokenizer = transformers.AutoTokenizer.from_pretrained("EleutherAI/gpt-neox-20b", skip_special_tokens=True)
     _retriever = DenseRetriever("msmarco-distilbert-base-v3")
     _toxic_detector = ToxicityDetector("original")
     _language_detector = LanguageDetector()
@@ -39,8 +39,9 @@ class Connector:
             self._retriever.add_text_and_index(sentence, "ITEM_" + str(index))
 
     def predict_answer(self, prompt: str) -> str:
-        payload = {"data": prompt, "num_beams": 1}
+        payload = {"data": prompt, "num_beams": 1, "num_tokens": 8}
         r = requests.post(self._server_url, json=payload, verify=False)
+        print(r)
         answer = json.loads(r.content.decode("utf-8"))
         return self._tokenizer.decode(answer)
 

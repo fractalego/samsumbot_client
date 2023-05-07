@@ -6,10 +6,10 @@ from nltk import word_tokenize
 
 def create_text_from_summary_and_dialogue(summary, dialogue):
     text = f"""
-A partial summary of the conversation is:
+The following is a summary of a conversation. All the elements of the conversation are described succintly:
 {summary}
 
-With the dialogue being:
+Create a plausible dialogue based on the aforementioned summary. Do not repeat yourself.
 {dialogue}
     """.strip()
 

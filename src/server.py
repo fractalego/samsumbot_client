@@ -18,6 +18,14 @@ app.config.from_object(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 
+@app.before_request
+def before_request():
+    if not request.is_secure:
+        url = request.url.replace('http://', 'https://', 1)
+        code = 301
+        return redirect(url, code=code)
+
+
 @app.route("/")
 def index():
     return render_template("index.html")
