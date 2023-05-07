@@ -24,7 +24,6 @@ class Connector:
     _path = os.path.dirname(__file__)
     _config = yaml.safe_load(open(os.path.join(_path, "../config.yaml")))
     _server_url = f"https://{_config['connection']['host']}:{_config['connection']['port']}/predictions/bot"
-    _tokenizer = transformers.AutoTokenizer.from_pretrained("EleutherAI/gpt-neox-20b", skip_special_tokens=True)
     _retriever = DenseRetriever("msmarco-distilbert-base-v3")
     _toxic_detector = ToxicityDetector("original")
     _language_detector = LanguageDetector()
@@ -40,10 +39,11 @@ class Connector:
 
     def predict_answer(self, prompt: str) -> str:
         payload = {"data": prompt, "num_beams": 1, "num_tokens": 8}
-        r = requests.post(self._server_url, json=payload, verify=False)
-        print(r)
-        answer = json.loads(r.content.decode("utf-8"))
-        return self._tokenizer.decode(answer)
+        answer = requests.post(self._server_url, json=payload, verify=False)
+        if not answer.text:
+            return "\n"
+        print(answer.text)
+        return answer.text
 
     def create_dialogue_from_bot_and_user_lines(
         self, bot_lines, user_lines, max_history=3
@@ -61,7 +61,7 @@ class Connector:
         answer = ""
         while all(item not in answer for item in self._terminal_characters):
             text = create_text_from_summary_and_dialogue(summary, dialogue + answer)
-            answer += self.predict_answer(text)[len(text) :]
+            answer += self.predict_answer(text)
 
         end = min(
             [
