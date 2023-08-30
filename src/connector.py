@@ -21,6 +21,7 @@ from src.utils import (
 
 class Connector:
     _terminal_characters = ["\n", "User:"]
+    _max_length = 1024
     _path = os.path.dirname(__file__)
     _config = yaml.safe_load(open(os.path.join(_path, "../config.yaml")))
     _server_url = f"https://{_config['connection']['host']}:{_config['connection']['port']}/predictions/bot"
@@ -59,7 +60,7 @@ class Connector:
 
     def get_reply_from_connection(self, summary: str, dialogue: str):
         answer = ""
-        while all(item not in answer for item in self._terminal_characters):
+        while all(item not in answer for item in self._terminal_characters) and len(answer) < self._max_length:
             text = create_text_from_summary_and_dialogue(summary, dialogue + answer)
             answer += self.predict_answer(text)
 
