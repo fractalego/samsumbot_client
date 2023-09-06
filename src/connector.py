@@ -39,7 +39,7 @@ class Connector:
             self._retriever.add_text_and_index(sentence, "ITEM_" + str(index))
 
     def predict_answer(self, prompt: str) -> str:
-        payload = {"data": prompt, "num_beams": 1, "num_tokens": 8}
+        payload = {"data": prompt, "temperature": 0.5, "num_tokens": 8}
         answer = requests.post(self._server_url, json=payload, verify=False)
         if not answer.text:
             return "\n"
