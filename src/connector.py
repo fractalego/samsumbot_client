@@ -71,7 +71,7 @@ class Connector:
                 if answer.find(item) > 0
             ]
         )
-        answer = answer[:end].strip()
+        answer = answer[:end]
         return answer
 
     def generate_reply(
